@@ -3,12 +3,12 @@ import random                       # For random dice rolls
 class CardManager:                  # CardManager class definition
     def __init__(self, players):    # Initialization function
         self.players = players      # List of player objects
-        self.suspects = ["Professor Pear", "Colonel Ketchup", "Mrs. Peanut", "Miss Violet"]    # Suspect names
-        self.weapons = ["Golf Club", "Brick", "Potato Peeler", "M9A1 Rocket Launcher"]         # Weapon names
-        self.rooms = ["Kitchen", "Garage", "Bedroom", "Bathroom"]                              # Room names
+        self.suspects = ["Red", "Blue", "Yellow", "Green"]
+        self.weapons = ["Candlestick", "Knife", "Rope"]
+        self.rooms = ["Kitchen", "Living Room", "Bedroom", "Bathroom"]
         self.solution = {}          # 1 suspect, 1 weapon, 1 room
 
-    def setup_cards(self):          # Card dealing function
+    def setup_cards(self):
         # Pick solution cards
         self.solution['suspect'] = random.choice(self.suspects)
         self.solution['weapon'] = random.choice(self.weapons)
@@ -30,13 +30,14 @@ class CardManager:                  # CardManager class definition
             if card != self.solution['room']:
                 remaining_cards.append(card)
 
-        # Shuffle remaining cards (shuffle is a built-in function of random)
+        # Shuffle remaining cards (shuffle is a built in function of random)
         random.shuffle(remaining_cards)
 
-        # Deal to players evenly
+        # Deal remaining cards to players evenly
         player_index = 0
         for card in remaining_cards:
-            self.players[player_index].hand.append(card)
-            player_index = (player_index + 1) % len(self.players) # move to next player
+            self.players[player_index].hand.append(card)            # Add one card from remaining_cards list to the player hand
+            player_index = (player_index + 1) % len(self.players)   # move to next player
 
     
+
