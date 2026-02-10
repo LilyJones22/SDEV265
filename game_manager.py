@@ -1,4 +1,5 @@
 # Import modules
+import random
 from card_manager import CardManager
 from turn_manager import TurnManager
 from board_manager import BoardManager
@@ -14,11 +15,34 @@ class GameManager:
 
         # Initialize other managers
         self.card_manager = CardManager(self.players)
-        self.turn_manager = TurnManager()
+        self.turn_manager = TurnManager(self)
         self.board_manager = BoardManager(self.players)
 
         # Request card setup from CardManager
         self.card_manager.setup_cards()
+
+    # Verify suggestion function
+    def check_suggestion(self, suggesting_player, suspect, weapon, room):
+        print("\nChecking suggestion...")
+
+        start_index = self.players.index(suggesting_player)             # Index starts with player making suggestion
+        num_players = len(self.players)                                 # num_players = length of player list
+
+        for i in range(1, num_players):                                 # Loop goes through player list, checking for a card that matches suggestion
+            player = self.players[(start_index + i) % num_players]
+
+            matching_cards = [
+                card for card in player.hand                            # matching_cards == True if a matching card is found in a player's hand
+                if card in [suspect, weapon, room]
+            ]
+
+            if matching_cards:                              # IF matching cards are found in player hands, a random card is chosen to show the suggesting player
+                shown_card = random.choice(matching_cards)
+                print(f"{player.name} disproves the suggestion by showing a card.")
+                return shown_card
+
+        print("No one could disprove the suggestion.")      
+        return None
 
     # Verify accusation function
     def check_accusation(self, player, suspect, weapon, room):
@@ -40,13 +64,15 @@ class GameManager:
                     continue                # Skip eliminated players
 
                 print(f"\n{player.name}'s turn:")
-                self.turn_manager.run_turn(player, self.board_manager, self.card_manager)       # Run next turn using turn_manager
+                game_won = self.turn_manager.run_turn(player, self.board_manager, self.card_manager)       # Run next turn using turn_manager
 
+                if game_won or self.game_over:              # Added extra game_over check in turn_manager, first one was failing for some reason
+                    break
+                
                 # Check for last player standing, creates list of players that are NOT marked eliminated
                 active_players = [p for p in self.players if not p.is_eliminated]
-                if len(active_players) == 1:
+                if len(active_players) == 1:        # IF length of active_players list == 1, game over 
                     print(f"{active_players[0].name} is the last player standing and wins!")
                     self.game_over = True
                     break
-                       
-     
+  
