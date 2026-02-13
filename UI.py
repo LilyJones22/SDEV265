@@ -2,12 +2,6 @@
 UI.py - Clue (SDEV265) GUI
 Role: Ziad (UI/Board Design)
 
-This file adds a Tkinter-based UI on top of the existing game logic.
-It does NOT change any teammate modules. It uses:
-- GameManager (creates players, card/turn/board managers)
-- BoardManager (movement validation + room entrances)
-- CardManager (suspects, weapons, rooms)
-- GameManager.check_suggestion / check_accusation (core Clue logic)
 
 Run:
     python UI.py
