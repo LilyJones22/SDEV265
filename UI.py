@@ -190,6 +190,21 @@ class ClueUI(tk.Tk):
         for c in self._current_player().hand:
             self.cards_list.insert(tk.END, c)
 
+    def _save_current_player_notes(self):
+        player = self.game.current_player()
+
+        for category, items in self._note_vars.items():
+            for name, var in items.items():
+                player.notes[category][name] = var.get()
+
+    def _load_current_player_notes(self):
+        player = self.game.current_player()
+
+        for category, items in self._note_vars.items():
+            for name, var in items.items():
+                value = player.notes[category].get(name, False)
+                var.set(value)
+
     # ----- Board Drawing --------------------------------------------------
 
     def _draw_board(self):
@@ -344,7 +359,9 @@ class ClueUI(tk.Tk):
         self.btn_suggest.config(state=tk.DISABLED)
 
     def _end_turn(self):
+        self._save_current_player_notes()
         self.game.advance_turn()
+        self._load_current_player_notes()
         self._start_turn(self._current_player())
 
 
