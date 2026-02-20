@@ -5,3 +5,10 @@ class Player:
         self.position = 0               # Position on board
         self.hand = []                  # List of cards in hand
         self.is_eliminated = False      # Elimination status
+
+        # Player notepad data
+        self.notes = {
+            "Suspects": {},
+            "Weapons": {},
+            "Rooms": {}
+            }
