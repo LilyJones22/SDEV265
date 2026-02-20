@@ -18,7 +18,7 @@ class BoardManager:
             player.position = self.start_positions[i]
 
     # Player movement function
-    def move_player(self, player, direction):
+    def move_player(self, player, direction) -> bool:
         new_position = player.position
 
         # Movement validations 
@@ -54,3 +54,7 @@ class BoardManager:
     # Function retrieves the name of the room at player.position
     def get_room_at_player(self, player):
         return self.room_entrances.get(player.position, None)
+
+    def get_player_position(self, player):
+        return player.position
+    
